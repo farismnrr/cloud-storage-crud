@@ -214,13 +214,13 @@ app.put("/uploads", upload.single("file"), async (req, res) => {
             });
         } catch (error) {
             console.error("Error:", error);
-            if (error.message === "File not found") {
+            if (error instanceof Error && error.message === "File not found") {
                 res.status(404).send({ code: 404, message: "File not found" }); // Mengubah status code dan pesan
             } else {
                 res.status(500).send({
                     code: 500,
                     message: "Failed to update file",
-                    error: error.message,
+                    error: error,
                 });
             }
         }
@@ -246,7 +246,7 @@ app.delete("/uploads", async (req, res) => {
             })
             .catch((error) => {
                 console.error("Error:", error);
-                if (error.message === "File not found") {
+                if (error instanceof Error && error.message === "File not found") {
                     res.status(404).send({ code: 404, message: "File not found" }); // Mengubah status code dan pesan
                 } else {
                     res.status(500).send({
